@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
  * 11.01.2015.
  */
 public class UserMeal {
-    protected Integer id;
+    private Integer id;
 
     public void setId(Integer id) {
         this.id = id;
