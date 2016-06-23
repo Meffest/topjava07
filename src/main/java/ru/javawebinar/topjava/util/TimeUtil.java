@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -9,8 +10,10 @@ import java.time.format.DateTimeFormatter;
  * 07.01.2015.
  */
 public class TimeUtil {
-    public static final DateTimeFormatter DATE_TME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter DATE_TME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
+    public static final LocalDate MIN_DATE = LocalDate.of(1, 1, 1);
+    public static final LocalDate MAX_DATE = LocalDate.of(3000, 1, 1);
     public static<T extends Comparable<? super T>> boolean isBetween(T value, T startTime, T endTime) {
         return value.compareTo(startTime) >= 0 && value.compareTo(endTime) <= 0;
     }
