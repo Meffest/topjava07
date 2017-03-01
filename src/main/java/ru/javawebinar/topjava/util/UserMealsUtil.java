@@ -3,16 +3,13 @@ package ru.javawebinar.topjava.util;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.model.UserMealWithExceed;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-/**
- * GKislin
- * 31.05.2015.
- */
+
 public class UserMealsUtil {
     public static void main(String[] args) {
         List<UserMeal> mealList = Arrays.asList(
@@ -26,10 +23,31 @@ public class UserMealsUtil {
         getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(12,0), 2000);
 //        .toLocalDate();
 //        .toLocalTime();
+        for (UserMealWithExceed userMealWithExceed : getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(16,0), 2000)) {
+            System.out.println(userMealWithExceed);
+        }
     }
 
     public static List<UserMealWithExceed>  getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        // TODO return filtered list with correctly exceeded field
+        Map<LocalDate, Integer> caloriesDay = new HashMap<>();
+
+        for (UserMeal userMeal : mealList) {
+            caloriesDay.put(userMeal.getDateTime().toLocalDate(), caloriesDay.getOrDefault(userMeal.getDateTime().toLocalDate(), 0) + userMeal.getCalories());
+        }
+
+        List<UserMealWithExceed> userMealWithExceeds = new ArrayList<>();
+
+        for (UserMeal userMeal : mealList) {
+            if (TimeUtil.isBetween(userMeal.getDateTime().toLocalTime(), startTime, endTime)) {
+                userMealWithExceeds.add(new UserMealWithExceed(userMeal.getDateTime(), userMeal.getDescription(), userMeal.getCalories(),
+                        caloriesDay.get(userMeal.getDateTime().toLocalDate()) <= caloriesPerDay));
+            }
+        }
+        return userMealWithExceeds;
+    }
+
+    public static List<UserMealWithExceed>  getFilteredWithExceededLambda(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+
         return null;
     }
 }
